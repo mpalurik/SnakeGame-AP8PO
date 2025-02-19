@@ -4,6 +4,15 @@ using System.Threading;
 
 namespace Snake
 {
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SnakeGame game = new SnakeGame();
+            game.Run();
+        }
+    }
+
     class SnakeGame
     {
         private const int WindowHeight = 16;
@@ -12,9 +21,8 @@ namespace Snake
         private const int GameSpeed = 100;
 
         private Pixel head;
-        private List<int> bodyXPositions;
-        private List<int> bodyYPositions;
-        private int berryX, berryY;
+        private List<Pixel> body;
+        private Pixel berry;
         private int score;
         private string movementDirection;
         private Random random;
@@ -31,8 +39,7 @@ namespace Snake
             isGameOver = false;
 
             head = new Pixel { X = WindowWidth / 2, Y = WindowHeight / 2, Color = ConsoleColor.Red };
-            bodyXPositions = new List<int>();
-            bodyYPositions = new List<int>();
+            body = new List<Pixel>();
 
             SpawnBerry();
         }
@@ -78,15 +85,15 @@ namespace Snake
             {
                 isGameOver = true;
             }
-            for (int i = 0; i < bodyXPositions.Count; i++)
+            foreach (var pixel in body)
             {
-                if (bodyXPositions[i] == head.X && bodyYPositions[i] == head.Y)
+                if (pixel.X == head.X && pixel.Y == head.Y)
                 {
                     isGameOver = true;
                     return;
                 }
             }
-            if (head.X == berryX && head.Y == berryY)
+            if (head.X == berry.X && head.Y == berry.Y)
             {
                 score++;
                 SpawnBerry();
@@ -95,7 +102,7 @@ namespace Snake
 
         private void DrawBerry()
         {
-            Console.SetCursorPosition(berryX, berryY);
+            Console.SetCursorPosition(berry.X, berry.Y);
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write("■");
         }
@@ -103,9 +110,9 @@ namespace Snake
         private void DrawSnake()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < bodyXPositions.Count; i++)
+            foreach (var pixel in body)
             {
-                Console.SetCursorPosition(bodyXPositions[i], bodyYPositions[i]);
+                Console.SetCursorPosition(pixel.X, pixel.Y);
                 Console.Write("■");
             }
             Console.SetCursorPosition(head.X, head.Y);
@@ -157,20 +164,17 @@ namespace Snake
                     break;
             }
 
-            bodyXPositions.Add(prevX);
-            bodyYPositions.Add(prevY);
+            body.Add(new Pixel { X = prevX, Y = prevY, Color = ConsoleColor.Green });
 
-            if (bodyXPositions.Count > score)
+            if (body.Count > score)
             {
-                bodyXPositions.RemoveAt(0);
-                bodyYPositions.RemoveAt(0);
+                body.RemoveAt(0);
             }
         }
 
         private void SpawnBerry()
         {
-            berryX = random.Next(1, WindowWidth - 2);
-            berryY = random.Next(1, WindowHeight - 2);
+            berry = new Pixel { X = random.Next(1, WindowWidth - 2), Y = random.Next(1, WindowHeight - 2), Color = ConsoleColor.Cyan };
         }
 
         private void DisplayGameOver()
@@ -178,18 +182,12 @@ namespace Snake
             Console.SetCursorPosition(WindowWidth / 5, WindowHeight / 2);
             Console.WriteLine($"Game Over! Score: {score}");
         }
+    }
 
-        class Pixel
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-            public ConsoleColor Color { get; set; }
-        }
-
-        static void Main()
-        {
-            SnakeGame game = new SnakeGame();
-            game.Run();
-        }
+    class Pixel
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public ConsoleColor Color { get; set; }
     }
 }
