@@ -9,18 +9,12 @@ namespace Snake
     class Berry
     {
         public int berryX, berryY;
-        private Random random;
 
         public Berry()
         {
-            random = new Random();
+            var random = new Random();
+            berryX = random.Next(1, GameSettings.windowWidth - 2);
+            berryY = random.Next(1, GameSettings.windowHeight - 2);
         }
-
-        private void SpawnBerry()
-        {
-            berryX = random.Next(1, WindowWidth - 2);
-            berryY = random.Next(1, WindowHeight - 2);
-        }
-
     }
 }

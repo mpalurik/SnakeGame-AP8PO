@@ -8,28 +8,38 @@ namespace Snake
 {
     class InputHandler
     {
-        public MovementDirection HandleInput()
+        Dictionary<ConsoleKey, MovementDirection> keyMap;
+
+        public InputHandler(int keyMapIndex)
         {
-            if (Console.KeyAvailable)
+            keyMap = GameSettings.keyMap[keyMapIndex];
+        }
+
+        private bool IsOppositeDirection(MovementDirection currentDirection, MovementDirection newDirection)
+        {
+            return (currentDirection == MovementDirection.UP && newDirection == MovementDirection.DOWN) ||
+                   (currentDirection == MovementDirection.DOWN && newDirection == MovementDirection.UP) ||
+                   (currentDirection == MovementDirection.LEFT && newDirection == MovementDirection.RIGHT) ||
+                   (currentDirection == MovementDirection.RIGHT && newDirection == MovementDirection.LEFT);
+        }
+
+        public MovementDirection HandleInput(MovementDirection currentDirection)
+        {
+            if (!Console.KeyAvailable)
             {
-                ConsoleKey key = Console.ReadKey(true).Key;
-                switch (key)
+                return currentDirection;
+            }
+
+            ConsoleKey key = Console.ReadKey(true).Key;
+            if (keyMap.TryGetValue(key, out MovementDirection newDirection))
+            {
+                if (!IsOppositeDirection(currentDirection, newDirection))
                 {
-                    case ConsoleKey.UpArrow when movementDirection != "DOWN":
-                        movementDirection = "UP";
-                        return;
-                        break;
-                    case ConsoleKey.DownArrow when movementDirection != "UP":
-                        movementDirection = "DOWN";
-                        break;
-                    case ConsoleKey.LeftArrow when movementDirection != "RIGHT":
-                        movementDirection = "LEFT";
-                        break;
-                    case ConsoleKey.RightArrow when movementDirection != "LEFT":
-                        movementDirection = "RIGHT";
-                        break;
+                    return newDirection;
                 }
             }
+
+            return currentDirection;
         }
     }
 }

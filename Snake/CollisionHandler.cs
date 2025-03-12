@@ -7,27 +7,65 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace Snake
 {
+    enum CollisionType
+    {
+        BERRY,
+        BORDER,
+        SNAKE,
+        NONE
+    }
+
     class CollisionHandler
     {
-        private void CheckCollisions()
+        public CollisionType CheckCollisions(GameState gameState)
         {
-            if (head.X == 0 || head.X == WindowWidth - 1 || head.Y == 0 || head.Y == WindowHeight - 1)
+            for (int i = 0; i < gameState.Snakes.Count; i++)
             {
-                isGameOver = true;
-            }
-            for (int i = 0; i < bodyXPositions.Count; i++)
-            {
-                if (bodyXPositions[i] == head.X && bodyYPositions[i] == head.Y)
+                var snake = gameState.Snakes[i];
+                if (snake.head.X == 0 || snake.head.X == GameSettings.windowWidth - 1 || snake.head.Y == 0 || snake.head.Y == GameSettings.windowHeight - 1)
                 {
-                    isGameOver = true;
-                    return;
+                    HandleBorderCollision(gameState);
+                    return CollisionType.BORDER;
+                }
+                for (int j = 0; j < snake.bodyXPositions.Count; j++)
+                {
+                    if (snake.bodyXPositions[j] == snake.head.X && snake.bodyYPositions[j] == snake.head.Y)
+                    {
+                        HandleSnakeCollision(gameState);
+                        return CollisionType.SNAKE;
+                    }
+                }
+                for (int j = 0; j < gameState.Berries.Count; j++)
+                {
+                    if (snake.head.X == gameState.Berries[j].berryX && snake.head.Y == gameState.Berries[j].berryY)
+                    {
+                        HandleBerryCollision(gameState, i, j);
+                        return CollisionType.BERRY;
+                    }
                 }
             }
-            if (head.X == berryX && head.Y == berryY)
-            {
-                score++;
-                SpawnBerry();
-            }
+            return CollisionType.NONE;
+        }
+
+        private void HandleBerryCollision(GameState gameState, int snakeIndex, int berryIndex)
+        {
+            gameState.Snakes[snakeIndex].score++;
+            gameState.Berries.RemoveAt(berryIndex);
+            gameState.Berries.Add(new Berry());
+        }
+
+        private void HandleBorderCollision(GameState gameState)
+        {
+            gameState.isGameOver = true;
+            // Handle border collision logic here
+            Console.WriteLine("Border collision detected!");
+        }
+
+        private void HandleSnakeCollision(GameState gameState)
+        {
+            gameState.isGameOver = true;
+            // Handle snake collision logic here
+            Console.WriteLine("Snake collision detected!");
         }
     }
 }

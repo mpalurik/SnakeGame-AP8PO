@@ -12,33 +12,36 @@ namespace Snake
         public Pixel head;
         public List<int> bodyXPositions;
         public List<int> bodyYPositions;
-        private MovementDirection movementDirection { get; set; }
+        public InputHandler inputHandler;
+        public int score { get; set; }
+        public MovementDirection movementDirection { get; set; }
 
-        public Snake(Pixel head, MovementDirection movementDirection)
+        public Snake(Pixel head, MovementDirection movementDirection, InputHandler inputHandler)
         {
             this.head = head;
             bodyXPositions = new List<int>();
             bodyYPositions = new List<int>();
             this.movementDirection = movementDirection;
+            this.inputHandler = inputHandler;
         }
 
-        private void MoveSnake()
+        public void MoveSnake()
         {
             int prevX = head.X;
             int prevY = head.Y;
 
             switch (movementDirection)
             {
-                case "UP":
+                case MovementDirection.UP:
                     head.Y--;
                     break;
-                case "DOWN":
+                case MovementDirection.DOWN:
                     head.Y++;
                     break;
-                case "LEFT":
+                case MovementDirection.LEFT:
                     head.X--;
                     break;
-                case "RIGHT":
+                case MovementDirection.RIGHT:
                     head.X++;
                     break;
             }

@@ -8,43 +8,49 @@ namespace Snake
 {
     class RenderHandler
     {
-        public void RenderBorders(int WindowHeight,int WindowWidth)
+        public void RenderBorders()
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            for (int i = 0; i < WindowWidth; i++)
+            for (int i = 0; i < GameSettings.windowWidth; i++)
             {
                 Console.SetCursorPosition(i, 0);
                 Console.Write("■");
-                Console.SetCursorPosition(i, WindowHeight - 1);
+                Console.SetCursorPosition(i, GameSettings.windowHeight - 1);
                 Console.Write("■");
             }
-            for (int i = 0; i < WindowHeight; i++)
+            for (int i = 0; i < GameSettings.windowHeight; i++)
             {
                 Console.SetCursorPosition(0, i);
                 Console.Write("■");
-                Console.SetCursorPosition(WindowWidth - 1, i);
+                Console.SetCursorPosition(GameSettings.windowWidth - 1, i);
                 Console.Write("■");
             }
         }
 
-        public void RenderSnake(Snake snake)
+        public void RenderSnakes(List<Snake> snakes)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            for (int i = 0; i < snake.bodyXPositions.Count; i++)
+            foreach (var snake in snakes)
             {
-                Console.SetCursorPosition(snake.bodyXPositions[i], snake.bodyYPositions[i]);
+                Console.ForegroundColor = ConsoleColor.Green;
+                for (int i = 0; i < snake.bodyXPositions.Count; i++)
+                {
+                    Console.SetCursorPosition(snake.bodyXPositions[i], snake.bodyYPositions[i]);
+                    Console.Write("■");
+                }
+                Console.SetCursorPosition(snake.head.X, snake.head.Y);
+                Console.ForegroundColor = snake.head.Color;
                 Console.Write("■");
             }
-            Console.SetCursorPosition(snake.head.X, snake.head.Y);
-            Console.ForegroundColor = snake.head.Color;
-            Console.Write("■");
         }
 
-        public void RenderBerry(Berry berry)
+        public void RenderBerries(List<Berry> berries)
         {
-            Console.SetCursorPosition(berry.berryX, berry.berryY);
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("■");
+            foreach (var berry in berries)
+            {
+                Console.SetCursorPosition(berry.berryX, berry.berryY);
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("■");
+            }
         }
 
     }
