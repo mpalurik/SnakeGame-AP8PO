@@ -8,31 +8,32 @@ namespace Snake
 {
     class Berry
     {
-        public int berryX, berryY;
+        public Pixel berryPixel;
 
         public Berry(GameState gameState)
         {
+            berryPixel = new Pixel(0, 0);
             var random = new Random();
             bool isBerryColliding;
 
             do
             {
-                berryX = random.Next(1, GameSettings.windowWidth - 2);
-                berryY = random.Next(1, GameSettings.windowHeight - 2);
+                berryPixel.X = random.Next(1, GameSettings.windowWidth - 2);
+                berryPixel.Y = random.Next(1, GameSettings.windowHeight - 2);
 
                 isBerryColliding = false;
 
                 foreach (var snake in gameState.Snakes)
                 {
-                    if (berryX == snake.head.X && berryY == snake.head.Y)
+                    if (berryPixel == snake.head)
                     {
                         isBerryColliding = true;
                         break;
                     }
 
-                    foreach (var pixel in snake.body)
+                    foreach (var snakePixel in snake.body)
                     {
-                        if (pixel.X == berryX && pixel.Y == berryY)
+                        if (snakePixel == berryPixel)
                         {
                             isBerryColliding = true;
                             break;

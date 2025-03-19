@@ -29,7 +29,7 @@ namespace Snake
                 }
                 foreach (var pixel in snake.body)
                 {
-                    if (pixel.X == snake.head.X && pixel.Y == snake.head.Y)
+                    if (pixel == snake.head)
                     {
                         HandleSnakeCollision(gameState);
                         return CollisionType.SNAKE;
@@ -37,7 +37,7 @@ namespace Snake
                 }
                 for (int j = 0; j < gameState.Berries.Count; j++)
                 {
-                    if (snake.head.X == gameState.Berries[j].berryX && snake.head.Y == gameState.Berries[j].berryY)
+                    if (snake.head == gameState.Berries[j].berryPixel)
                     {
                         HandleBerryCollision(gameState, i, j);
                         return CollisionType.BERRY;

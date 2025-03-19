@@ -47,7 +47,7 @@ namespace Snake
         {
             foreach (var berry in berries)
             {
-                Console.SetCursorPosition(berry.berryX, berry.berryY);
+                Console.SetCursorPosition(berry.berryPixel.X, berry.berryPixel.Y);
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("■");
             }
