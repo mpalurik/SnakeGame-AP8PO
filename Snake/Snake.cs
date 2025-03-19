@@ -11,8 +11,6 @@ namespace Snake
     {
         public Pixel head;
         public List<Pixel> body;
-        //public List<int> bodyXPositions;
-        //public List<int> bodyYPositions;
         public InputHandler inputHandler;
         public ConsoleColor color;
         public int score { get; set; }
