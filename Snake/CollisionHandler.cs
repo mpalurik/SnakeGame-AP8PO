@@ -27,9 +27,9 @@ namespace Snake
                     HandleBorderCollision(gameState);
                     return CollisionType.BORDER;
                 }
-                for (int j = 0; j < snake.bodyXPositions.Count; j++)
+                foreach (var pixel in snake.body)
                 {
-                    if (snake.bodyXPositions[j] == snake.head.X && snake.bodyYPositions[j] == snake.head.Y)
+                    if (pixel.X == snake.head.X && pixel.Y == snake.head.Y)
                     {
                         HandleSnakeCollision(gameState);
                         return CollisionType.SNAKE;
@@ -51,7 +51,7 @@ namespace Snake
         {
             gameState.Snakes[snakeIndex].score++;
             gameState.Berries.RemoveAt(berryIndex);
-            gameState.Berries.Add(new Berry());
+            gameState.Berries.Add(new Berry(gameState));
         }
 
         private void HandleBorderCollision(GameState gameState)

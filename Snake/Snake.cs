@@ -10,19 +10,21 @@ namespace Snake
     class Snake
     {
         public Pixel head;
-        public List<int> bodyXPositions;
-        public List<int> bodyYPositions;
+        public List<Pixel> body;
+        //public List<int> bodyXPositions;
+        //public List<int> bodyYPositions;
         public InputHandler inputHandler;
+        public ConsoleColor color;
         public int score { get; set; }
         public MovementDirection movementDirection { get; set; }
 
-        public Snake(Pixel head, MovementDirection movementDirection, InputHandler inputHandler)
+        public Snake(Pixel head, MovementDirection movementDirection, InputHandler inputHandler, ConsoleColor color)
         {
             this.head = head;
-            bodyXPositions = new List<int>();
-            bodyYPositions = new List<int>();
+            body = new List<Pixel>();
             this.movementDirection = movementDirection;
             this.inputHandler = inputHandler;
+            this.color = color;
         }
 
         public void MoveSnake()
@@ -46,13 +48,11 @@ namespace Snake
                     break;
             }
 
-            bodyXPositions.Add(prevX);
-            bodyYPositions.Add(prevY);
+            body.Add(new Pixel(prevX, prevY));
 
-            if (bodyXPositions.Count > score)
+            if ( body.Count > score )
             {
-                bodyXPositions.RemoveAt(0);
-                bodyYPositions.RemoveAt(0);
+                body.RemoveAt(0);
             }
         }
     }

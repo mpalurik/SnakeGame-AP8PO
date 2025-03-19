@@ -10,13 +10,12 @@ namespace Snake
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public ConsoleColor Color { get; set; }
+        public ConsoleColor? color { get; set; }
 
-        public Pixel(int x, int y, ConsoleColor color)
+        public Pixel(int x, int y)
         {
             X = x;
             Y = y;
-            Color = color;
         }
     }
 }

@@ -32,13 +32,13 @@ namespace Snake
             foreach (var snake in snakes)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                for (int i = 0; i < snake.bodyXPositions.Count; i++)
+                foreach (Pixel pixel in snake.body)
                 {
-                    Console.SetCursorPosition(snake.bodyXPositions[i], snake.bodyYPositions[i]);
+                    Console.SetCursorPosition(pixel.X, pixel.Y);
                     Console.Write("■");
                 }
                 Console.SetCursorPosition(snake.head.X, snake.head.Y);
-                Console.ForegroundColor = snake.head.Color;
+                Console.ForegroundColor = snake.color;
                 Console.Write("■");
             }
         }

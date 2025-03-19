@@ -15,7 +15,7 @@ namespace Snake
 
     class SnakeGame
     {
-        private GameState gameState = new();
+        GameState gameState = new();
         RenderHandler renderHandler = new();
         CollisionHandler collisionHandler = new();
 
@@ -26,8 +26,8 @@ namespace Snake
             for (int i = 0; i < GameSettings.playerCount; i++)
             {
                 var inputHandler = new InputHandler(i);
-                gameState.Snakes.Add(new Snake(new Pixel((GameSettings.windowWidth / 2), (GameSettings.windowHeight / 2 + i), colors[i]), MovementDirection.RIGHT, inputHandler));
-                gameState.Berries.Add(new Berry());
+                gameState.Snakes.Add(new Snake(new Pixel((GameSettings.windowWidth / 2), (GameSettings.windowHeight / 2 + i)), MovementDirection.RIGHT, inputHandler, colors[i]));
+                gameState.Berries.Add(new Berry(gameState));
             }
         }
 
